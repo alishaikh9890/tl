@@ -10,7 +10,7 @@ const Cart = () => {
 
     const dispatch = useDispatch()
   return (
-    <div>
+    <div className='transition-all duration-300 ease-in-out'>
           <div className=" max-w-7xl mx-auto my-10">
                     <div className="flex gap-5 flex-wrap justify-center">
                         {
