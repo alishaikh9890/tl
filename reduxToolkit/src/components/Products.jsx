@@ -13,16 +13,16 @@ const Products = () => {
     console.log(cart)
 
 
-    function cartStatus(id){
-       let item = cart.find(ele => ele.id == id)
-          if(item)
-          {
-            return item.quantity;
-          }
-          else{
-            return 0;
-          }
-    }
+    // function cartStatus(id){
+    //    let item = cart.find(ele => ele.id == id)
+    //       if(item)
+    //       {
+    //         return item.quantity;
+    //       }
+    //       else{
+    //         return 0;
+    //       }
+    // }
 
 
 
@@ -100,7 +100,7 @@ const Products = () => {
                     <img className='border rounded-2xl aspect-square' src={ele.image} alt="" />
                     <h2 className='text-xl font-bold'>{ele.price}</h2>
                     <h1>{ele.title}</h1>
-                    {
+                    {/* {
                         cartStatus(ele.id)   
                          ?
                          <>
@@ -109,8 +109,8 @@ const Products = () => {
                     <button  className='bg-amber-600 text-white py-1 px-3'> -</button>
                     </>
                         :
-                        <button onClick={() => dispatch(addCart(ele))} className='bg-amber-600 text-white py-1 px-3'> ADD</button>
-                }
+                      } */}
+                      <button onClick={() => dispatch(addCart(ele))} className='bg-amber-600 text-white py-1 px-3'> ADD</button>
                 </div>
                     ))
                 }

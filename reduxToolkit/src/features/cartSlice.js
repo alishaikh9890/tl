@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { showNotification } from "./uiSlice";
 
 
 let initialState = {
@@ -12,6 +13,12 @@ const cartSlice = createSlice({
     name: "cart",
     initialState,
     reducers : {
+
+        replaceData(state, action){
+                state.cartLength = action.payload.cartLength
+                state.cartList = action.payload.cartList
+        },
+
         addCart(state, action){
             let newItem = action.payload;
 
@@ -35,6 +42,7 @@ const cartSlice = createSlice({
 
 
         removeCart(state, action){
+            state.cartLength--;
           state.cartList=  state.cartList.filter(ele=>ele.id !=action.payload)
         },
 
@@ -45,5 +53,9 @@ const cartSlice = createSlice({
 })
 
 
-export const {addCart, showCart, removeCart} = cartSlice.actions;
+
+
+
+
+export const {addCart, showCart, removeCart, replaceData} = cartSlice.actions;
 export default cartSlice.reducer

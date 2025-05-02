@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Cart from './components/Cart'
 import Notification from './components/Notification'
 import { showNotification } from './features/uiSlice'
+import { fetchData, sendCartData } from './features/cartActions'
 
 function App() {
   const isFirstRender = useRef(true);
@@ -18,6 +19,10 @@ function App() {
 
   const dispatch = useDispatch()
 
+useEffect(()=>{
+  dispatch(fetchData())
+}, [dispatch])
+
   useEffect(() => {
 
     if(isFirstRender.current)
@@ -25,21 +30,7 @@ function App() {
       isFirstRender.current = false;
       return;
     }
-    const sendRequest = async () => {
-
-      dispatch(showNotification({type:"warning", message: "Pending the Request...!", open :true}))
-      
-      const res = await fetch('https://redux-addtocart-default-rtdb.firebaseio.com/cartList.json',
-        {
-          method: "PUT",
-          body: JSON.stringify(cart)
-        })
-        const data = await res.json()
-        dispatch(showNotification({type:"success", message: "Sending Data Successfull...!", open :true}))
-      }
-      sendRequest().catch((err)=> {
-        dispatch(showNotification({type:"error", message: "Sending request failed...!", open :true}))
-    })
+    dispatch(sendCartData(cart))
   }, [cart])
 
 
