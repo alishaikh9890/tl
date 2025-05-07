@@ -1,61 +1,45 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { showNotification } from "./uiSlice";
 
 
 let initialState = {
-    cartList : [],
+    cartList :[],
     cartLength:0,
-    showCart : false
+    showCart:false
 }
 
-
 const cartSlice = createSlice({
-    name: "cart",
+    name : "cart",
     initialState,
-    reducers : {
-
-        replaceData(state, action){
-                state.cartLength = action.payload.cartLength
-                state.cartList = action.payload.cartList
-        },
-
+    reducers: {
         addCart(state, action){
-            let newItem = action.payload;
+            let item = action.payload;
 
-            let itemStatus = state.cartList.find((ele) => ele.id == newItem.id)
 
-            if(itemStatus)
+            let exitItem = state.cartList.find((ele) => ele.id == item.id)
+
+            if(exitItem)
             {
-                itemStatus.quantity++;
-                itemStatus.price += newItem.price
+             exitItem.qtn++; 
+             exitItem.price  += item.price  
             }
             else{
-                newItem.quantity = 1;
-                state.cartList.push(newItem);
-                state.cartLength++;
+                item.qtn = 1;
+                state.cartList.push(item)
+                state.cartLength++
             }
         },
 
         showCart(state){
-            state.showCart= !state.showCart
-        },
-
-
+            state.showCart = !state.showCart
+        }
+        , 
         removeCart(state, action){
+            state.cartList = state.cartList.filter(ele=> ele.id != action.payload)
             state.cartLength--;
-          state.cartList=  state.cartList.filter(ele=>ele.id !=action.payload)
-        },
-
-        cartStatus(state, ){
-
         }
     }
 })
 
 
-
-
-
-
-export const {addCart, showCart, removeCart, replaceData} = cartSlice.actions;
-export default cartSlice.reducer
+export const {addCart, removeCart, showCart} = cartSlice.actions
+export const cartReducer = cartSlice.reducer

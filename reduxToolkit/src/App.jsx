@@ -1,48 +1,62 @@
-import { useEffect, useRef, useState } from 'react'
 
-import './App.css'
-import Auth from './components/Auth'
-import Products from './components/Products'
 import { useDispatch, useSelector } from 'react-redux'
+import './App.css'
+import Login from './components/Login'
+import Products from './components/Products'
+import Navbar from './components/Navbar'
 import Cart from './components/Cart'
-import Notification from './components/Notification'
-import { showNotification } from './features/uiSlice'
-import { fetchData, sendCartData } from './features/cartActions'
+import { showCart } from './features/cartSlice'
+import Alert from './components/Alert'
+import { useEffect, useState } from 'react'
+import { showAlert } from './features/alertSlice'
+import { postDataApi } from './features/cartAction'
+
+
+
 
 function App() {
-  const isFirstRender = useRef(true);
-
-  const cart = useSelector((state) => state.cart)
-  const notification = useSelector((state) => state.ui.notification)
-  let auth = useSelector((state) => state.auth.auth)
-  let show = useSelector((state) => state.cart.showCart)
+  let auth = useSelector(state=> state.auth.auth)
+  let cart = useSelector(state=> state.cart.cartList)
+  let cartData = useSelector(state => state.cart)
+  let alert = useSelector(state=> state.alert)
+  let showCart = useSelector(state=> state.cart.showCart)
+  const [first, setFirst] = useState(true)
+ 
+  // console.log(cart)
+  // console.log(auth)
 
   const dispatch = useDispatch()
 
-useEffect(()=>{
-  dispatch(fetchData())
-}, [dispatch])
 
-  useEffect(() => {
-
-    if(isFirstRender.current)
-    {
-      isFirstRender.current = false;
-      return;
-    }
-    dispatch(sendCartData(cart))
-  }, [cart])
+useEffect(() => {
+  if(first){
+    setFirst(false)
+    return;
+  }
+ dispatch(postDataApi(cartData))
+} ,[cartData])
 
 
-  return (
-    <div>
-     { notification && <Notification type={notification.type} message={notification.message} />}
-      {!auth && <Auth />}
-      {auth && <Products />}
-      {auth && show && <Cart />}
 
 
-    </div>
+
+
+
+
+ return (
+
+    <>
+     {alert.status && <Alert alert={alert} />}
+    { auth &&  <Navbar/>}
+    { !auth &&  <Login/>}
+    { auth &&  <Products/>}
+
+{ showCart && <Cart/>}
+    
+
+       
+        
+    </>
   )
 }
 

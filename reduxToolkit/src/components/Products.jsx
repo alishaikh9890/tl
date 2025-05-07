@@ -1,51 +1,49 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { logout } from '../features/authSlice';
-import { addCart, showCart } from '../features/cartSlice';
+import { useDispatch } from 'react-redux'
+import { addCart } from '../features/cartSlice'
+import { showAlert } from '../features/alertSlice'
 
 const Products = () => {
 
-    const dispatch = useDispatch();
-
-    let cart = useSelector(state=> state.cart.cartList)
-    let cartLength = useSelector(state=> state.cart.cartLength)
-
-    console.log(cart)
+const dispatch = useDispatch()
 
 
-    // function cartStatus(id){
-    //    let item = cart.find(ele => ele.id == id)
-    //       if(item)
-    //       {
-    //         return item.quantity;
-    //       }
-    //       else{
-    //         return 0;
-    //       }
-    // }
+function handleCart(ele){
 
-
-
-
+  dispatch(addCart(ele))
+ 
+}
 
   return (
     <div>
-        <div className="w-auto shadow p-1">
-            <div className=" max-w-7xl mx-auto  py-2 flex justify-between items-center">
-                <h1 className='text-3xl font-bold'>Alishan</h1>
-                <div>
-                <button onClick={()=>dispatch(showCart())} className='rounded-2xl py-1 px-4 border hover:bg-slate-200'>Cart: {cartLength} items</button>
-                <button onClick={() => dispatch(logout())} className='rounded-2xl bg-red-600 py-1 px-4 border hover:bg-red-800'>Logout</button>
-                </div>
-            </div>
-        </div>
-
-
-        <div className=" max-w-7xl mx-auto my-10">
-            <div className="flex gap-5 flex-wrap justify-center">
+        <div className="max-w-7xl mx-auto p-2 mt-5">
+            <div className="flex flex-wrap gap-3">
                 {
                     [
-                     
+                        {
+                        "id": 1,
+                        "title": "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
+                        "price": 109.95,
+                        "description": "Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday",
+                        "category": "men's clothing",
+                        "image": "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
+                        "rating": {
+                          "rate": 3.9,
+                          "count": 120
+                        }
+                      },
+                      {
+                        "id": 2,
+                        "title": "Mens Casual Premium Slim Fit T-Shirts ",
+                        "price": 22.3,
+                        "description": "Slim-fitting style, contrast raglan long sleeve, three-button henley placket, light weight & soft fabric for breathable and comfortable wearing. And Solid stitched shirts with round neck made for durability and a great fit for casual fashion wear and diehard baseball fans. The Henley style round neckline includes a three-button placket.",
+                        "category": "men's clothing",
+                        "image": "https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg",
+                        "rating": {
+                          "rate": 4.1,
+                          "count": 259
+                        }
+                      },
                       {
                         "id": 3,
                         "title": "Mens Cotton Jacket",
@@ -69,51 +67,32 @@ const Products = () => {
                           "rate": 2.1,
                           "count": 430
                         }
-                      },
-                      
-                      {
-                        "id": 6,
-                        "title": "Solid Gold Petite Micropave ",
-                        "price": 168,
-                        "description": "Satisfaction Guaranteed. Return or exchange any order within 30 days.Designed and sold by Hafeez Center in the United States. Satisfaction Guaranteed. Return or exchange any order within 30 days.",
-                        "category": "jewelery",
-                        "image": "https://fakestoreapi.com/img/61sbMiUnoGL._AC_UL640_QL65_ML3_.jpg",
-                        "rating": {
-                          "rate": 3.9,
-                          "count": 70
-                        }
-                      },
-                      {
-                        "id": 7,
-                        "title": "White Gold Plated Princess",
-                        "price": 9.99,
-                        "description": "Classic Created Wedding Engagement Solitaire Diamond Promise Ring for Her. Gifts to spoil your love more for Engagement, Wedding, Anniversary, Valentine's Day...",
-                        "category": "jewelery",
-                        "image": "https://fakestoreapi.com/img/71YAIFU48IL._AC_UL640_QL65_ML3_.jpg",
-                        "rating": {
-                          "rate": 3,
-                          "count": 400
-                        }
                       }
                     ].map((ele) => (
-                <div key={ele.id} className="shadow p-2 w-[250px] bg-amber-100">
-                    <img className='border rounded-2xl aspect-square' src={ele.image} alt="" />
-                    <h2 className='text-xl font-bold'>{ele.price}</h2>
-                    <h1>{ele.title}</h1>
-                    {/* {
-                        cartStatus(ele.id)   
-                         ?
-                         <>
-                    <button onClick={() => dispatch(addCart(ele))} className='bg-amber-600 text-white py-1 px-3'> +</button>
-                    <button>{cartStatus(ele.id)}</button>
-                    <button  className='bg-amber-600 text-white py-1 px-3'> -</button>
-                    </>
-                        :
-                      } */}
-                      <button onClick={() => dispatch(addCart(ele))} className='bg-amber-600 text-white py-1 px-3'> ADD</button>
-                </div>
+                        <div key={ele.id} className="shadow rounded p-2 w-[300px]">
+                            
+
+                            <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
+                                <a href="#">
+                                    <img className="rounded-t-lg h-[200px] w-[200px]" src={ele.image} alt="" />
+                                </a>
+                                <div className="p-5">
+                                    <a href="#">
+                                        <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{ele.price}</h5>
+                                    </a>
+                                    <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{ele.title}</p>
+                                    <button
+                                        onClick={() => dispatch(handleCart(ele))}
+                                    className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        ADD CAert
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
                     ))
                 }
+               
             </div>
         </div>
     </div>
