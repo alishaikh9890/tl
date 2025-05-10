@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../features/authSlice'
 import { showCart } from '../features/cartSlice'
+import Dropdown from './Dropdown'
 
 const Navbar = () => {
 
@@ -18,9 +19,10 @@ const Navbar = () => {
                 <h1 className="text-2xl font-bold">Showp</h1>
                     <div className='flex gap-2'>
                         <button onClick={()=> dispatch(showCart())} className=' px-3 rounded-2xl border hover:bg-slate-50'>Cart: {cartLength} 👜</button>
-                        <button onClick={()=> dispatch(logout())} className=' bg-slate-600 rounded-full border hover:bg-red-700'>
-                            <img className='rounded-full w-10' src={auth.img} alt="" />
-                        </button>
+                        {/* <button onClick={()=> dispatch(logout())} className=' bg-slate-600 rounded-full border hover:bg-red-700'>
+                         
+                        </button> */}
+                            <Dropdown/>
                     </div>
             </div>
         </div>
