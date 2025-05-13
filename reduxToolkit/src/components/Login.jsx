@@ -20,6 +20,7 @@ import {
 } from "@firebase/auth";
 
 import { getFirestore, getDoc, setDoc, doc } from "@firebase/firestore";
+import { githubLogin, googleLogin, loginUser, registerUser } from "../features/authActions";
 
 const Login = () => {
   const [remember, setRemember] = useState(false)
@@ -71,74 +72,21 @@ const Login = () => {
 
 
 
-  async function githubLogin() {
-    try {
-      const res = await signInWithPopup(auth, provider1)
-      const users = res.user
-    } catch (error) {
-      console.log(err);
-    }
-  }
-
-  async function googleLogin() {
-    try {
-      const res = await signInWithPopup(auth, provider);
-
-      const users = res.user;
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
   async function handleRegsiter() {
-    const res = await createUserWithEmailAndPassword(
-      auth,
-      regData.email,
-      regData.password
-    );
-
-    const user = await res.user;
-    console.log(user);
-
-    await updateProfile(user, {
-      displayName: regData.username,
-      photoURL: regData.img,
-    });
-
-    console.log(auth.currentUser);
-
-    await setDoc(doc(db, "users", user.uid), {
-      uid: user.uid,
-      username: regData.username,
-      email: regData.email,
-      phone: regData.phone,
-      createdAt: new Date(),
-    });
+    try{
+      await registerUser(regData)
+    }
+    catch(err){
+      console.log(err)
+    }
   }
 
   async function handleLogin() {
-
-    const typeRemeber = remember ? browserLocalPersistence : browserSessionPersistence
-
-    await setPersistence(auth, typeRemeber)
-
-    const res = await signInWithEmailAndPassword(
-      auth,
-      logData.email,
-      logData.password
-    );
-
-    const user = res.user;
-
-    const storeUser = await getDoc(doc(db, "users", user.uid));
-
-    console.log(auth.currentUser);
-
-    if (storeUser.exists()) {
-      console.log(storeUser.data());
-    } else {
-      console.log("data not found...!");
-    }
+    try {
+        await loginUser(logData, remember)
+      } catch (error) {
+        console.log(error)
+      }
   }
 
   return (
@@ -220,7 +168,7 @@ const Login = () => {
           </button>
           <div className="flex justify-center gap-10">
             <button
-              onClick={googleLogin}
+              onClick={() => googleLogin()}
               className="shadow-2xl shadow-slate-500 rounded-full p-1"
             >
               <img
@@ -230,7 +178,7 @@ const Login = () => {
               />
             </button>
             <button
-              onClick={githubLogin}
+              onClick={()=>githubLogin()}
             className="shadow-2xl shadow-slate-500 rounded-full p-1">
               <img
                 className="w-10 rounded-full"
