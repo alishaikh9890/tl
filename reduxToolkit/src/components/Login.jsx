@@ -12,14 +12,21 @@ import {
   signInWithPopup,
   signInWithRedirect,
   onAuthStateChanged,
+  GithubAuthProvider,
+  setPersistence,
+  browserLocalPersistence,
+  inMemoryPersistence,
+  browserSessionPersistence
 } from "@firebase/auth";
 
 import { getFirestore, getDoc, setDoc, doc } from "@firebase/firestore";
 
 const Login = () => {
+  const [remember, setRemember] = useState(false)
   const auth = getAuth(app);
   const db = getFirestore(app);
   const provider = new GoogleAuthProvider(app);
+  const provider1 = new GithubAuthProvider(app);
 
 
   const authUser = useSelector((state) => state.auth.auth)
@@ -62,6 +69,17 @@ const Login = () => {
     });
   }, []);
 
+
+
+  async function githubLogin() {
+    try {
+      const res = await signInWithPopup(auth, provider1)
+      const users = res.user
+    } catch (error) {
+      console.log(err);
+    }
+  }
+
   async function googleLogin() {
     try {
       const res = await signInWithPopup(auth, provider);
@@ -99,6 +117,11 @@ const Login = () => {
   }
 
   async function handleLogin() {
+
+    const typeRemeber = remember ? browserLocalPersistence : browserSessionPersistence
+
+    await setPersistence(auth, typeRemeber)
+
     const res = await signInWithEmailAndPassword(
       auth,
       logData.email,
@@ -184,6 +207,10 @@ const Login = () => {
             onChange={handleData}
             className="border p-3 text-xl"
           />
+          <div className="flex gap-4">
+            <input type="checkbox" value={remember} onChange={()=>setRemember(!remember)}  />
+            Remember Me
+          </div>
           <button
             //  onClick={()=> dispatch(login())}
             onClick={handleLogin}
@@ -202,10 +229,12 @@ const Login = () => {
                 alt=""
               />
             </button>
-            <button className="shadow-2xl shadow-slate-500 rounded-full p-1">
+            <button
+              onClick={githubLogin}
+            className="shadow-2xl shadow-slate-500 rounded-full p-1">
               <img
                 className="w-10 rounded-full"
-                src="https://cdn-icons-png.flaticon.com/128/733/733547.png"
+                src="https://cdn-icons-png.flaticon.com/128/3291/3291695.png"
                 alt=""
               />
             </button>

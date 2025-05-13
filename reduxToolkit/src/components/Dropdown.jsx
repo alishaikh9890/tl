@@ -24,7 +24,6 @@ export default function Dropdown(){
                         <li><button onClick={() => signOut(auth1)} className="py-1 text-white font-bold rounded-sm hover:bg-red-700 px-5 bg-red-900">Logout &#x27B2;</button></li>
                     </ul>
                 </div>
-         
 </div>
     
   )
